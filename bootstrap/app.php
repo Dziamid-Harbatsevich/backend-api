@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    // Auth routes live outside the API group (no /api prefix; the stateful
+    // session/CSRF web guard applies), so register them as extra web routes.
+    ->withRouting(web: __DIR__.'/../routes/auth.php')
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->api(prepend: [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
